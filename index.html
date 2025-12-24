@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Giáng Sinh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #1a4d7a 0%, #2563a8 30%, #c93545 70%, #b82d3f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Các ngôi sao lấp lánh */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 1.5em;
+            word-wrap: break-word;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+            padding: 20px;
+            line-height: 3;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Đồi tuyết và cây thông */
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: 
+                /* Cây thông bên trái */
+                radial-gradient(ellipse 60px 150px at 8% 100%, #2d5f3f 0%, transparent 100%),
+                radial-gradient(ellipse 50px 120px at 8% 95%, #3d7f5f 0%, transparent 100%),
+                radial-gradient(ellipse 40px 100px at 8% 92%, #4d9f7f 0%, transparent 100%),
+                
+                /* Cây thông bên phải */
+                radial-gradient(ellipse 70px 160px at 92% 100%, #2d5f3f 0%, transparent 100%),
+                radial-gradient(ellipse 55px 130px at 92% 95%, #3d7f5f 0%, transparent 100%),
+                radial-gradient(ellipse 45px 110px at 92% 92%, #4d9f7f 0%, transparent 100%),
+                
+                /* Cây thông nhỏ */
+                radial-gradient(ellipse 30px 80px at 20% 100%, #3d7f5f 0%, transparent 100%),
+                radial-gradient(ellipse 35px 85px at 80% 100%, #3d7f5f 0%, transparent 100%),
+                
+                /* Đồi tuyết */
+                radial-gradient(ellipse 800px 200px at 50% 130%, #ffffff 0%, #f0f8ff 50%, transparent 100%),
+                radial-gradient(ellipse 600px 150px at 20% 120%, #f0f8ff 0%, transparent 100%),
+                radial-gradient(ellipse 600px 150px at 80% 120%, #f0f8ff 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Hiệu ứng tuyết rơi */
+        .snowflake {
+            position: absolute;
+            top: -50px;
+            color: white;
+            font-size: 1em;
+            opacity: 0;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            z-index: 10;
+            position: relative;
+        }
+
+        .card {
+            width: 380px;
+            height: 570px;
+            position: relative;
+            background: linear-gradient(135deg, #c31432 0%, #dc2430 100%);
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border: 3px solid gold;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shine 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            50% { transform: translate(-30%, -30%) scale(1.5); opacity: 1; }
+        }
+
+        .card-front {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 40px;
+            z-index: 2;
+            transition: opacity 0.5s ease;
+        }
+
+        .card.opened .card-front {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .ornament {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: swing 2s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .card-front h1 {
+            font-size: 2.5em;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .card-front p {
+            font-size: 1.2em;
+            text-align: center;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Phần lời chúc trượt từ dưới lên */
+        .message-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f5dc 0%, #fff8dc 100%);
+            border-radius: 15px;
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .card.opened .message-container {
+            transform: translateY(0);
+        }
+
+        .decorative-border {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px dashed #c31432;
+            border-radius: 10px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .message-content {
+            text-align: center;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.8s ease 0.5s;
+        }
+
+        .card.opened .message-content {
+            opacity: 1;
+        }
+
+        .message-content h2 {
+            font-size: 2em;
+            color: #c31432;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .message {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 25px;
+            font-style: italic;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .signature {
+            font-size: 1.3em;
+            color: #c31432;
+            font-weight: bold;
+            margin-top: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #c31432;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.8s, transform 0.2s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .card.opened .close-btn {
+            opacity: 1;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1);
+            background: #a01020;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" id="card" onclick="openCard()">
+            <div class="card-front">
+                <div class="ornament">🎄</div>
+                <h1>Merry Christmas</h1>
+                <p>Nhấn để mở thiệp</p>
+                <div class="click-hint">✨ Click me ✨</div>
+            </div>
+            <div class="message-container">
+                <div class="decorative-border"></div>
+                <button class="close-btn" onclick="closeCard(event)">✕</button>
+                <div class="message-content">
+                    <h2>🎅 Chúc Mừng Giáng Sinh 🎅</h2>
+                    <div class="message">
+                        Tuy có hơi muộn một xíu nhưng mà tui chúc em Linh một mùa giáng xinh vui vẻ!
+                        Có nhiều sức khoẻ,mãi mãi xinh đẹp và ở bên tui nhiều hơn nữaa.Tui rất cảm ơn vì em Linh vì thời gian qua đã ở bên tui những lúc tui vui 
+                        và lúc tui buồn, mặc dù tui đã làm nhiều điều làm Linh buồn.Tui rất rất cảm ơn Linh vì đã ở bên tui trong suốt thời gian qua, mong cuộc hành trình của tui và Linh ngày càng đi xa hơn nữa!🎁✨
+                    </div>
+                    <div class="signature">
+                        💝 Mãi iu em Linhhh 💝
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tạo hiệu ứng tuyết rơi
+        function createSnowflakes() {
+            const snowflakes = ['❅', '❆', '❄'];
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
+
+        // Phát nhạc nền tự động
+        const music = new Audio('https://raw.githubusercontent.com/15phamkhoa-a11y/Merry-Chrismas/refs/heads/main/spoticatch%20(mp3cut.net).mp3');
+        music.loop = true;
+        music.volume = 0.5;
+        
+
+        // Tự động phát nhạc khi trang load
+        window.addEventListener('load', () => {
+            music.play().catch(e => {
+                console.log('Autoplay bị chặn, cần tương tác từ người dùng');
+            });
+        });
+
+        // Phát nhạc khi người dùng click vào bất kỳ đâu (phòng trường hợp autoplay bị chặn)
+        document.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+            }
+        }, { once: true });
+            
+        function openCard() {
+            const card = document.getElementById('card');
+            if (!card.classList.contains('opened')) {
+                card.classList.add('opened');
+                // Đảm bảo nhạc đang phát khi mở thiệp
+                if (music.paused) {
+                    music.play();
+                }
+            }
+        }
+
+        function closeCard(event) {
+            event.stopPropagation();
+            const card = document.getElementById('card');
+            card.classList.remove('opened');
+        }
+        
+        
+    </script>
+    
+    
+</body>
+</html>
